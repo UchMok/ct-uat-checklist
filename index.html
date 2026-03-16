@@ -1330,4 +1330,10 @@ function copyResultsForManual() {
 // Initialize
 loadResults();
 loadInstructionsState();
-if (!selectedPlatform)
+if (!selectedPlatform) {
+  document.getElementById('container').innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">👆 Select your platform above to begin testing.</p>';
+}
+</script>
+
+</body>
+</html>
