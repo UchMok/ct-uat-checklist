@@ -363,32 +363,6 @@
       font-size: 13px;
     }
     
-    .screenshot-preview {
-      margin-top: 8px;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .screenshot-preview img {
-      max-width: 100%;
-      max-height: 150px;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-    }
-    
-    .screenshot-preview button {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 8px;
-      font-size: 11px;
-      cursor: pointer;
-    }
-    
     .footer {
       position: fixed;
       bottom: 0;
@@ -763,7 +737,6 @@
         <li>What happened (required)</li>
         <li>What you expected to happen (required)</li>
         <li>Severity level</li>
-        <li>Screenshot (optional but helpful!)</li>
       </ul>
     </div>
     
@@ -1028,11 +1001,6 @@ function renderScenario(s) {
                 <option value="minor" ${result.severity === 'minor' ? 'selected' : ''}>🟡 Minor — Cosmetic or small issue</option>
               </select>
             </div>
-            <div class="bug-field">
-              <label>Screenshot (optional)</label>
-              <input type="file" accept="image/*" onchange="handleScreenshot(${s.id}, this)">
-              ${result.screenshot ? `<div class="screenshot-preview"><img src="${result.screenshot}" alt="Screenshot"><button onclick="removeScreenshot(${s.id})">✕ Remove</button></div>` : ''}
-            </div>
           </div>
           ` : `
           <textarea class="notes-input" placeholder="Notes (optional)..." rows="2" onchange="setNotes(${s.id}, this.value)">${result.notes || ''}</textarea>
@@ -1105,35 +1073,6 @@ function setBugField(id, field, value) {
   if (!results[id]) results[id] = {};
   results[id][field] = value;
   saveResults();
-}
-
-function handleScreenshot(id, input) {
-  const file = input.files[0];
-  if (!file) return;
-  
-  // Check file size (max 2MB for localStorage)
-  if (file.size > 2 * 1024 * 1024) {
-    alert('Screenshot must be under 2MB. Try a smaller image or crop it.');
-    input.value = '';
-    return;
-  }
-  
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    if (!results[id]) results[id] = {};
-    results[id].screenshot = e.target.result;
-    saveResults();
-    renderScenarios();
-  };
-  reader.readAsDataURL(file);
-}
-
-function removeScreenshot(id) {
-  if (results[id]) {
-    delete results[id].screenshot;
-    saveResults();
-    renderScenarios();
-  }
 }
 
 function updateProgress() {
@@ -1250,8 +1189,7 @@ async function submitToSheet() {
         // Bug fields (for failed scenarios)
         whatHappened: results[s.id].whatHappened || '',
         expected: results[s.id].expected || '',
-        severity: results[s.id].severity || '',
-        screenshot: results[s.id].screenshot || ''
+        severity: results[s.id].severity || ''
       };
     }
   });
