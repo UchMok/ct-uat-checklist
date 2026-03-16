@@ -471,123 +471,8 @@
       font-weight: 500;
     }
     
-    .instructions-panel {
-      background: white;
-      margin: 12px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    .instructions-header {
-      background: #1B3A5C;
-      color: white;
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    
-    .instructions-toggle {
-      font-size: 12px;
-      opacity: 0.8;
-    }
-    
-    .instructions-content {
-      padding: 20px;
-      line-height: 1.6;
-    }
-    
-    .instructions-content.collapsed {
-      display: none;
-    }
-    
-    .instructions-content h2 {
-      margin: 0 0 12px 0;
-      font-size: 20px;
-      color: #1B3A5C;
-    }
-    
-    .instructions-content h3 {
-      margin: 0 0 8px 0;
-      font-size: 15px;
-      color: #1B3A5C;
-    }
-    
-    .instructions-content p {
-      margin: 0 0 16px 0;
-      color: #444;
-    }
-    
-    .instructions-section {
-      background: #f8f9fa;
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-    
-    .instructions-section:last-of-type {
-      margin-bottom: 16px;
-    }
-    
-    .instructions-content ol,
-    .instructions-content ul {
-      margin: 0;
-      padding-left: 20px;
-      color: #444;
-    }
-    
-    .instructions-content li {
-      margin-bottom: 6px;
-    }
-    
-    .instructions-content ul ul {
-      margin-top: 6px;
-    }
-    
-    .instructions-content a {
-      color: #1B3A5C;
-    }
-    
-    .instructions-content .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    .instructions-content .badge.pass {
-      background: #d4edda;
-      color: #155724;
-    }
-    
-    .instructions-content .badge.fail {
-      background: #f8d7da;
-      color: #721c24;
-    }
-    
-    .instructions-content .badge.skip {
-      background: #fff3cd;
+    .deadline-banner a {
       color: #856404;
-    }
-    
-    .start-btn {
-      width: 100%;
-      padding: 14px;
-      background: #34c759;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    
-    .start-btn:active {
-      background: #2da44e;
     }
     
     .instructions-section {
@@ -828,7 +713,7 @@
 </div>
 
 <div class="deadline-banner">
-  ⏰ Testing deadline: Friday, March 20
+  ⏰ Testing deadline: Friday, March 20 · Questions? Contact <a href="mailto:wole@moksolimpact.com">Wole</a> or <a href="mailto:uchenna@moksolimpact.com">Uchenna</a>
 </div>
 
 <div class="instructions-section" id="instructionsSection">
@@ -848,7 +733,7 @@
     <div class="instruction-block">
       <div class="instruction-title">⏰ Timeline</div>
       <ul>
-        <li><strong>Now – Friday, March 21:</strong> Complete your testing</li>
+        <li><strong>Now – Friday, March 20:</strong> Complete your testing</li>
         <li><strong>March 25:</strong> App launches to App Store / Google Play</li>
         <li><strong>April 5:</strong> Easter Sunday — app live for congregation</li>
       </ul>
@@ -885,11 +770,6 @@
     <div class="instruction-block">
       <div class="instruction-title">💾 Your Progress is Saved</div>
       <p>Your progress saves automatically to your browser. You can close this page and come back later — just use the same browser on the same device.</p>
-    </div>
-    
-    <div class="instruction-block">
-      <div class="instruction-title">❓ Questions?</div>
-      <p>Contact Wole at <a href="mailto:wole@moksolimpact.com">wole@moksolimpact.com</a> or Uchenna at <a href="mailto:uchenna@moksolimpact.com">uchenna@moksolimpact.com</a> </p>
     </div>
     
     <button class="got-it-btn" onclick="dismissInstructions()">Got it — Let's Start!</button>
@@ -992,12 +872,11 @@ const scenarios = [
 ];
 
 // Google Apps Script endpoint for sheet submissions
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMtdFsKVwjDFsz4kam0vcSE7T22unmp1lbZFXMfda5XUNtNgtTIE2YZb2I2NIuosQ7/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyoThGQY3lMQjb7wX2Lo0SOBcAqxbIocmIMD8TIo2nI8lD3Xcx8gpIXUqQuGsGTomwu/exec';
 
 let selectedPlatform = null;
 let results = {};
 let expandedAreas = new Set();
-let instructionsHidden = false;
 
 // Load saved results from localStorage
 function loadResults() {
@@ -1013,30 +892,25 @@ function loadResults() {
   if (savedExpanded) {
     expandedAreas = new Set(JSON.parse(savedExpanded));
   }
-  const savedInstructionsHidden = localStorage.getItem('ct_uat_instructions_hidden');
-  if (savedInstructionsHidden === 'true') {
-    instructionsHidden = true;
-    document.getElementById('instructionsContent').classList.add('collapsed');
-    document.getElementById('instructionsToggle').textContent = 'Show ▼';
-  }
 }
 
 function toggleInstructions() {
-  const content = document.getElementById('instructionsContent');
-  const toggle = document.getElementById('instructionsToggle');
-  content.classList.toggle('collapsed');
-  instructionsHidden = content.classList.contains('collapsed');
-  toggle.textContent = instructionsHidden ? 'Show ▼' : 'Hide ▲';
-  localStorage.setItem('ct_uat_instructions_hidden', instructionsHidden);
+  const section = document.getElementById('instructionsSection');
+  section.classList.toggle('collapsed');
+  localStorage.setItem('ct_uat_instructions_collapsed', section.classList.contains('collapsed'));
 }
 
-function hideInstructions() {
-  const content = document.getElementById('instructionsContent');
-  const toggle = document.getElementById('instructionsToggle');
-  content.classList.add('collapsed');
-  instructionsHidden = true;
-  toggle.textContent = 'Show ▼';
-  localStorage.setItem('ct_uat_instructions_hidden', 'true');
+function dismissInstructions() {
+  const section = document.getElementById('instructionsSection');
+  section.classList.add('collapsed');
+  localStorage.setItem('ct_uat_instructions_collapsed', 'true');
+}
+
+function loadInstructionsState() {
+  const collapsed = localStorage.getItem('ct_uat_instructions_collapsed');
+  if (collapsed === 'true') {
+    document.getElementById('instructionsSection').classList.add('collapsed');
+  }
 }
 
 function saveResults() {
@@ -1350,13 +1224,6 @@ async function submitToSheet() {
     return;
   }
   
-  // Check if URL has been configured
-  if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
-    statusEl.innerHTML = 'Google Script URL not configured yet.<br><a href="#" onclick="copyResultsForManual(); return false;">Click here to copy results</a>';
-    statusEl.className = 'submit-status error';
-    return;
-  }
-  
   // Save tester info for next time
   localStorage.setItem('ct_uat_testerName', testerName);
   localStorage.setItem('ct_uat_device', device);
@@ -1465,25 +1332,6 @@ loadResults();
 loadInstructionsState();
 if (!selectedPlatform) {
   document.getElementById('container').innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">👆 Select your platform above to begin testing.</p>';
-}
-
-function toggleInstructions() {
-  const section = document.getElementById('instructionsSection');
-  section.classList.toggle('collapsed');
-  localStorage.setItem('ct_uat_instructions_collapsed', section.classList.contains('collapsed'));
-}
-
-function dismissInstructions() {
-  const section = document.getElementById('instructionsSection');
-  section.classList.add('collapsed');
-  localStorage.setItem('ct_uat_instructions_collapsed', 'true');
-}
-
-function loadInstructionsState() {
-  const collapsed = localStorage.getItem('ct_uat_instructions_collapsed');
-  if (collapsed === 'true') {
-    document.getElementById('instructionsSection').classList.add('collapsed');
-  }
 }
 </script>
 
