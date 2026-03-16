@@ -308,6 +308,87 @@
       border-color: #1B3A5C;
     }
     
+    .bug-fields {
+      background: #fff5f5;
+      border: 1px solid #ffcccc;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+    
+    .bug-field {
+      margin-bottom: 10px;
+    }
+    
+    .bug-field:last-child {
+      margin-bottom: 0;
+    }
+    
+    .bug-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    
+    .bug-field .required {
+      color: #ff3b30;
+    }
+    
+    .bug-field textarea,
+    .bug-field select,
+    .bug-field input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    
+    .bug-field textarea:focus,
+    .bug-field select:focus {
+      outline: none;
+      border-color: #ff3b30;
+    }
+    
+    .bug-field select {
+      background: white;
+      cursor: pointer;
+    }
+    
+    .bug-field input[type="file"] {
+      padding: 8px;
+      font-size: 13px;
+    }
+    
+    .screenshot-preview {
+      margin-top: 8px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .screenshot-preview img {
+      max-width: 100%;
+      max-height: 150px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+    
+    .screenshot-preview button {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    
     .footer {
       position: fixed;
       bottom: 0;
@@ -388,6 +469,233 @@
       font-size: 13px;
       text-align: center;
       font-weight: 500;
+    }
+    
+    .instructions-panel {
+      background: white;
+      margin: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .instructions-header {
+      background: #1B3A5C;
+      color: white;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    
+    .instructions-toggle {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    
+    .instructions-content {
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    .instructions-content.collapsed {
+      display: none;
+    }
+    
+    .instructions-content h2 {
+      margin: 0 0 12px 0;
+      font-size: 20px;
+      color: #1B3A5C;
+    }
+    
+    .instructions-content h3 {
+      margin: 0 0 8px 0;
+      font-size: 15px;
+      color: #1B3A5C;
+    }
+    
+    .instructions-content p {
+      margin: 0 0 16px 0;
+      color: #444;
+    }
+    
+    .instructions-section {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    
+    .instructions-section:last-of-type {
+      margin-bottom: 16px;
+    }
+    
+    .instructions-content ol,
+    .instructions-content ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #444;
+    }
+    
+    .instructions-content li {
+      margin-bottom: 6px;
+    }
+    
+    .instructions-content ul ul {
+      margin-top: 6px;
+    }
+    
+    .instructions-content a {
+      color: #1B3A5C;
+    }
+    
+    .instructions-content .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .instructions-content .badge.pass {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .instructions-content .badge.fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .instructions-content .badge.skip {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .start-btn {
+      width: 100%;
+      padding: 14px;
+      background: #34c759;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .start-btn:active {
+      background: #2da44e;
+    }
+    
+    .instructions-section {
+      background: white;
+      margin: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 2px solid #1B3A5C;
+    }
+    
+    .instructions-header {
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      background: #1B3A5C;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    
+    .instructions-section.collapsed .instructions-content {
+      display: none;
+    }
+    
+    .instructions-section.collapsed .chevron {
+      transform: rotate(-90deg);
+    }
+    
+    .instructions-content {
+      padding: 16px;
+    }
+    
+    .instructions-content h3 {
+      margin: 0 0 12px 0;
+      color: #1B3A5C;
+      font-size: 18px;
+    }
+    
+    .instructions-content p {
+      margin: 0 0 12px 0;
+      color: #444;
+      line-height: 1.5;
+    }
+    
+    .instruction-block {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .instruction-block:last-of-type {
+      margin-bottom: 16px;
+    }
+    
+    .instruction-title {
+      font-weight: 600;
+      color: #1B3A5C;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .instruction-block p {
+      margin: 0;
+      font-size: 14px;
+    }
+    
+    .instruction-block ul,
+    .instruction-block ol {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 14px;
+      color: #444;
+    }
+    
+    .instruction-block li {
+      margin-bottom: 6px;
+    }
+    
+    .instruction-block li:last-child {
+      margin-bottom: 0;
+    }
+    
+    .instruction-block ul ul {
+      margin-top: 6px;
+    }
+    
+    .instruction-block a {
+      color: #1B3A5C;
+    }
+    
+    .got-it-btn {
+      width: 100%;
+      padding: 14px;
+      background: #34c759;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .got-it-btn:active {
+      background: #2da44e;
     }
     
     .submit-modal {
@@ -520,7 +828,72 @@
 </div>
 
 <div class="deadline-banner">
-  ⏰ Testing deadline: Friday, March 21
+  ⏰ Testing deadline: Friday, March 20
+</div>
+
+<div class="instructions-section" id="instructionsSection">
+  <div class="instructions-header" onclick="toggleInstructions()">
+    <span>📋 Instructions & Overview</span>
+    <span class="chevron" id="instructionsChevron">▼</span>
+  </div>
+  <div class="instructions-content" id="instructionsContent">
+    <h3>Welcome, Beta Tester!</h3>
+    <p>Thank you for helping us test the Chicago Tabernacle app before we release it to the congregation. Your feedback ensures a smooth experience for everyone on Easter Sunday and beyond.</p>
+    
+    <div class="instruction-block">
+      <div class="instruction-title">📱 What You're Testing</div>
+      <p>The restored Chicago Tabernacle mobile app — the same app, now updated and ready for relaunch.</p>
+    </div>
+    
+    <div class="instruction-block">
+      <div class="instruction-title">⏰ Timeline</div>
+      <ul>
+        <li><strong>Now – Friday, March 21:</strong> Complete your testing</li>
+        <li><strong>March 25:</strong> App launches to App Store / Google Play</li>
+        <li><strong>April 5:</strong> Easter Sunday — app live for congregation</li>
+      </ul>
+    </div>
+    
+    <div class="instruction-block">
+      <div class="instruction-title">✅ How to Use This Checklist</div>
+      <ol>
+        <li><strong>Select your platform</strong> (iOS or Android) below</li>
+        <li><strong>Open the CT app</strong> on your phone alongside this checklist</li>
+        <li><strong>Work through each scenario</strong> — tap to expand sections</li>
+        <li>For each test:
+          <ul>
+            <li><strong>Pass ✓</strong> — It worked as expected</li>
+            <li><strong>Fail ✗</strong> — Something went wrong (you'll be asked for details)</li>
+            <li><strong>Skip –</strong> — You couldn't test this (e.g., feature not available)</li>
+          </ul>
+        </li>
+        <li><strong>Submit your results</strong> when done — they go directly to our tracking sheet</li>
+      </ol>
+    </div>
+    
+    <div class="instruction-block">
+      <div class="instruction-title">🐛 When Something Fails</div>
+      <p>If you mark a test as <strong>Fail</strong>, you'll see fields to describe:</p>
+      <ul>
+        <li>What happened (required)</li>
+        <li>What you expected to happen (required)</li>
+        <li>Severity level</li>
+        <li>Screenshot (optional but helpful!)</li>
+      </ul>
+    </div>
+    
+    <div class="instruction-block">
+      <div class="instruction-title">💾 Your Progress is Saved</div>
+      <p>Your progress saves automatically to your browser. You can close this page and come back later — just use the same browser on the same device.</p>
+    </div>
+    
+    <div class="instruction-block">
+      <div class="instruction-title">❓ Questions?</div>
+      <p>Contact Wole at <a href="mailto:wole@moksolimpact.com">wole@moksolimpact.com</a></p>
+    </div>
+    
+    <button class="got-it-btn" onclick="dismissInstructions()">Got it — Let's Start!</button>
+  </div>
 </div>
 
 <div class="platform-selector">
@@ -577,9 +950,9 @@
 
 <script>
 const scenarios = [
-  { id: 1, area: "Auth", platform: "Both", scenario: "Login Flow", given: "User is logged out", when: "User taps Login and completes sign-in", then: "User profile is shown and session is active" },
-  { id: 2, area: "Auth", platform: "Both", scenario: "Login Persistence", given: "User is logged in", when: "User closes app and opens it again", then: "User is still logged in" },
-  { id: 3, area: "Auth", platform: "Both", scenario: "Logout", given: "User is logged in", when: "User taps Logout", then: "User is logged out and Login is shown" },
+  { id: 1, area: "Auth", platform: "Android", scenario: "Login Flow", given: "User is logged out", when: "User taps Login and completes sign-in", then: "User profile is shown and session is active" },
+  { id: 2, area: "Auth", platform: "Android", scenario: "Login Persistence", given: "User is logged in", when: "User closes app and opens it again", then: "User is still logged in" },
+  { id: 3, area: "Auth", platform: "Android", scenario: "Logout", given: "User is logged in", when: "User taps Logout", then: "User is logged out and Login is shown" },
   { id: 4, area: "Auth", platform: "Android", scenario: "Google Sign-In", given: "User is logged out", when: "User signs in with Google", then: "Login completes and account appears in app" },
   { id: 5, area: "Auth", platform: "iOS", scenario: "iCloud Sign-In", given: "User has iCloud account", when: "User allows iCloud access in app", then: "Account access is granted and app proceeds" },
   { id: 6, area: "Content", platform: "Both", scenario: "Home Feed Loads", given: "App is opened", when: "User views Home feed", then: "Announcement list is visible and refresh works" },
@@ -624,6 +997,7 @@ const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMtdFsKVwjDF
 let selectedPlatform = null;
 let results = {};
 let expandedAreas = new Set();
+let instructionsHidden = false;
 
 // Load saved results from localStorage
 function loadResults() {
@@ -639,6 +1013,30 @@ function loadResults() {
   if (savedExpanded) {
     expandedAreas = new Set(JSON.parse(savedExpanded));
   }
+  const savedInstructionsHidden = localStorage.getItem('ct_uat_instructions_hidden');
+  if (savedInstructionsHidden === 'true') {
+    instructionsHidden = true;
+    document.getElementById('instructionsContent').classList.add('collapsed');
+    document.getElementById('instructionsToggle').textContent = 'Show ▼';
+  }
+}
+
+function toggleInstructions() {
+  const content = document.getElementById('instructionsContent');
+  const toggle = document.getElementById('instructionsToggle');
+  content.classList.toggle('collapsed');
+  instructionsHidden = content.classList.contains('collapsed');
+  toggle.textContent = instructionsHidden ? 'Show ▼' : 'Hide ▲';
+  localStorage.setItem('ct_uat_instructions_hidden', instructionsHidden);
+}
+
+function hideInstructions() {
+  const content = document.getElementById('instructionsContent');
+  const toggle = document.getElementById('instructionsToggle');
+  content.classList.add('collapsed');
+  instructionsHidden = true;
+  toggle.textContent = 'Show ▼';
+  localStorage.setItem('ct_uat_instructions_hidden', 'true');
 }
 
 function saveResults() {
@@ -713,6 +1111,7 @@ function renderScenario(s) {
   const result = results[s.id] || {};
   const statusClass = result.status || '';
   const platformClass = s.platform.toLowerCase().replace(' ', '');
+  const showBugFields = result.status === 'failed';
   
   return `
     <div class="scenario" data-id="${s.id}">
@@ -735,7 +1134,35 @@ function renderScenario(s) {
             <button class="status-btn fail ${result.status === 'failed' ? 'active' : ''}" onclick="setStatus(${s.id}, 'failed')">✗ Fail</button>
             <button class="status-btn skip ${result.status === 'skipped' ? 'active' : ''}" onclick="setStatus(${s.id}, 'skipped')">– Skip</button>
           </div>
+          
+          ${showBugFields ? `
+          <div class="bug-fields">
+            <div class="bug-field">
+              <label>What happened? <span class="required">*</span></label>
+              <textarea placeholder="Describe what went wrong..." rows="2" onchange="setBugField(${s.id}, 'whatHappened', this.value)">${result.whatHappened || ''}</textarea>
+            </div>
+            <div class="bug-field">
+              <label>Expected behavior <span class="required">*</span></label>
+              <textarea placeholder="What should have happened..." rows="2" onchange="setBugField(${s.id}, 'expected', this.value)">${result.expected || ''}</textarea>
+            </div>
+            <div class="bug-field">
+              <label>Severity</label>
+              <select onchange="setBugField(${s.id}, 'severity', this.value)">
+                <option value="">Select...</option>
+                <option value="critical" ${result.severity === 'critical' ? 'selected' : ''}>🔴 Critical — App crashes or unusable</option>
+                <option value="major" ${result.severity === 'major' ? 'selected' : ''}>🟠 Major — Feature broken but app works</option>
+                <option value="minor" ${result.severity === 'minor' ? 'selected' : ''}>🟡 Minor — Cosmetic or small issue</option>
+              </select>
+            </div>
+            <div class="bug-field">
+              <label>Screenshot (optional)</label>
+              <input type="file" accept="image/*" onchange="handleScreenshot(${s.id}, this)">
+              ${result.screenshot ? `<div class="screenshot-preview"><img src="${result.screenshot}" alt="Screenshot"><button onclick="removeScreenshot(${s.id})">✕ Remove</button></div>` : ''}
+            </div>
+          </div>
+          ` : `
           <textarea class="notes-input" placeholder="Notes (optional)..." rows="2" onchange="setNotes(${s.id}, this.value)">${result.notes || ''}</textarea>
+          `}
         </div>
       </div>
     </div>
@@ -798,6 +1225,41 @@ function setNotes(id, notes) {
   if (!results[id]) results[id] = {};
   results[id].notes = notes;
   saveResults();
+}
+
+function setBugField(id, field, value) {
+  if (!results[id]) results[id] = {};
+  results[id][field] = value;
+  saveResults();
+}
+
+function handleScreenshot(id, input) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  // Check file size (max 2MB for localStorage)
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Screenshot must be under 2MB. Try a smaller image or crop it.');
+    input.value = '';
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    if (!results[id]) results[id] = {};
+    results[id].screenshot = e.target.result;
+    saveResults();
+    renderScenarios();
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeScreenshot(id) {
+  if (results[id]) {
+    delete results[id].screenshot;
+    saveResults();
+    renderScenarios();
+  }
 }
 
 function updateProgress() {
@@ -871,6 +1333,23 @@ async function submitToSheet() {
     return;
   }
   
+  // Validate failed scenarios have required bug fields
+  const filtered = getFilteredScenarios();
+  const incompleteBugs = filtered.filter(s => {
+    const r = results[s.id];
+    if (r?.status === 'failed') {
+      return !r.whatHappened || !r.expected;
+    }
+    return false;
+  });
+  
+  if (incompleteBugs.length > 0) {
+    const names = incompleteBugs.map(s => s.scenario).join(', ');
+    statusEl.innerHTML = `Please fill in bug details for failed scenarios:<br><small>${names}</small>`;
+    statusEl.className = 'submit-status error';
+    return;
+  }
+  
   // Check if URL has been configured
   if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
     statusEl.innerHTML = 'Google Script URL not configured yet.<br><a href="#" onclick="copyResultsForManual(); return false;">Click here to copy results</a>';
@@ -884,7 +1363,6 @@ async function submitToSheet() {
   localStorage.setItem('ct_uat_os', osVersion);
   
   // Prepare payload
-  const filtered = getFilteredScenarios();
   const payload = {
     testerName: testerName,
     platform: selectedPlatform,
@@ -901,7 +1379,12 @@ async function submitToSheet() {
         scenario: s.scenario,
         area: s.area,
         status: results[s.id].status,
-        notes: results[s.id].notes || ''
+        notes: results[s.id].notes || '',
+        // Bug fields (for failed scenarios)
+        whatHappened: results[s.id].whatHappened || '',
+        expected: results[s.id].expected || '',
+        severity: results[s.id].severity || '',
+        screenshot: results[s.id].screenshot || ''
       };
     }
   });
@@ -979,8 +1462,28 @@ function copyResultsForManual() {
 
 // Initialize
 loadResults();
+loadInstructionsState();
 if (!selectedPlatform) {
   document.getElementById('container').innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">👆 Select your platform above to begin testing.</p>';
+}
+
+function toggleInstructions() {
+  const section = document.getElementById('instructionsSection');
+  section.classList.toggle('collapsed');
+  localStorage.setItem('ct_uat_instructions_collapsed', section.classList.contains('collapsed'));
+}
+
+function dismissInstructions() {
+  const section = document.getElementById('instructionsSection');
+  section.classList.add('collapsed');
+  localStorage.setItem('ct_uat_instructions_collapsed', 'true');
+}
+
+function loadInstructionsState() {
+  const collapsed = localStorage.getItem('ct_uat_instructions_collapsed');
+  if (collapsed === 'true') {
+    document.getElementById('instructionsSection').classList.add('collapsed');
+  }
 }
 </script>
 
