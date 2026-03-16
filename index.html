@@ -713,7 +713,7 @@
 </div>
 
 <div class="deadline-banner">
-  ⏰ Testing deadline: Friday, March 20 · Questions? Contact <a href="mailto:wole@moksolimpact.com">Wole</a> or <a href="mailto:uchenna@moksolimpact.com">Uchenna</a>
+  ⏰ Testing deadline: Friday, March 20 · Questions? Contact <a href="/cdn-cgi/l/email-protection#8cfbe3e0e9cce1e3e7ffe3e0e5e1fcedeff8a2efe3e1">Wole</a> or <a href="/cdn-cgi/l/email-protection#b9ccdad1dcd7d7d8f9d4d6d2cad6d5d0d4c9d8dacd97dad6d4">Uchenna</a>
 </div>
 
 <div class="instructions-section" id="instructionsSection">
@@ -828,7 +828,7 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const scenarios = [
   { id: 1, area: "Auth", platform: "Android", scenario: "Login Flow", given: "User is logged out", when: "User taps Login and completes sign-in", then: "User profile is shown and session is active" },
   { id: 2, area: "Auth", platform: "Android", scenario: "Login Persistence", given: "User is logged in", when: "User closes app and opens it again", then: "User is still logged in" },
@@ -872,7 +872,7 @@ const scenarios = [
 ];
 
 // Google Apps Script endpoint for sheet submissions
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyoThGQY3lMQjb7wX2Lo0SOBcAqxbIocmIMD8TIo2nI8lD3Xcx8gpIXUqQuGsGTomwu/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgkaAGJg9A_ixZh0KBSTmELoqzQsX2bJTPlkXnBeQzEscTGP_Y6OraNsFYHp6lGXo/exec';
 
 let selectedPlatform = null;
 let results = {};
@@ -1330,10 +1330,4 @@ function copyResultsForManual() {
 // Initialize
 loadResults();
 loadInstructionsState();
-if (!selectedPlatform) {
-  document.getElementById('container').innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">👆 Select your platform above to begin testing.</p>';
-}
-</script>
-
-</body>
-</html>
+if (!selectedPlatform)
