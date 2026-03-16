@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Chicago Tabernacle App - UAT Checklist</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      line-height: 1.5;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #1B3A5C 0%, #2d5a87 100%);
+      color: white;
+      padding: 20px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .header h1 {
+      margin: 0 0 4px 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .header .subtitle {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    
+    .progress-bar {
+      background: rgba(255,255,255,0.2);
+      height: 6px;
+      border-radius: 3px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      background: #34c759;
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+      font-size: 12px;
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .platform-selector {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background: white;
+      border-bottom: 1px solid #e5e5e7;
+    }
+    
+    .platform-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: 2px solid #1B3A5C;
+      background: white;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .platform-btn.active {
+      background: #1B3A5C;
+      color: white;
+    }
+    
+    .platform-btn .icon {
+      font-size: 18px;
+      margin-right: 6px;
+    }
+    
+    .container {
+      padding: 12px;
+      padding-bottom: 100px;
+    }
+    
+    .area-section {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    
+    .area-header {
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .area-header:active {
+      background: #f5f5f7;
+    }
+    
+    .area-title {
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .area-badge {
+      background: #e5e5e7;
+      color: #666;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    
+    .area-badge.complete {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .chevron {
+      font-size: 18px;
+      color: #999;
+      transition: transform 0.2s;
+    }
+    
+    .area-section.expanded .chevron {
+      transform: rotate(180deg);
+    }
+    
+    .scenarios {
+      display: none;
+    }
+    
+    .area-section.expanded .scenarios {
+      display: block;
+    }
+    
+    .scenario {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .scenario:last-child {
+      border-bottom: none;
+    }
+    
+    .scenario-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .checkbox {
+      width: 26px;
+      height: 26px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 2px;
+    }
+    
+    .checkbox.passed {
+      background: #34c759;
+      border-color: #34c759;
+      color: white;
+    }
+    
+    .checkbox.failed {
+      background: #ff3b30;
+      border-color: #ff3b30;
+      color: white;
+    }
+    
+    .checkbox.skipped {
+      background: #ff9500;
+      border-color: #ff9500;
+      color: white;
+    }
+    
+    .scenario-content {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .scenario-title {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    
+    .scenario-platform {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      font-weight: 500;
+      vertical-align: middle;
+    }
+    
+    .scenario-platform.ios {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+    
+    .scenario-platform.android {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .scenario-platform.both {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+    
+    .gwt {
+      font-size: 13px;
+      color: #666;
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+    
+    .gwt-row {
+      margin-bottom: 6px;
+    }
+    
+    .gwt-row:last-child {
+      margin-bottom: 0;
+    }
+    
+    .gwt-label {
+      font-weight: 600;
+      color: #1B3A5C;
+      display: inline;
+    }
+    
+    .status-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .status-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .status-btn.pass { border-color: #34c759; color: #34c759; }
+    .status-btn.pass.active { background: #34c759; color: white; }
+    
+    .status-btn.fail { border-color: #ff3b30; color: #ff3b30; }
+    .status-btn.fail.active { background: #ff3b30; color: white; }
+    
+    .status-btn.skip { border-color: #ff9500; color: #ff9500; }
+    .status-btn.skip.active { background: #ff9500; color: white; }
+    
+    .notes-input {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+    }
+    
+    .notes-input:focus {
+      outline: none;
+      border-color: #1B3A5C;
+    }
+    
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 12px 16px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 10px;
+    }
+    
+    .footer-btn {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .footer-btn.primary {
+      background: #1B3A5C;
+      color: white;
+    }
+    
+    .footer-btn.secondary {
+      background: #e5e5e7;
+      color: #1d1d1f;
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    
+    .legend-dot.pass { background: #34c759; }
+    .legend-dot.fail { background: #ff3b30; }
+    .legend-dot.skip { background: #ff9500; }
+    
+    .expand-toggle {
+      background: none;
+      border: 1px solid #1B3A5C;
+      color: #1B3A5C;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    
+    .deadline-banner {
+      background: #fff3cd;
+      color: #856404;
+      padding: 10px 16px;
+      font-size: 13px;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .submit-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 340px;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .modal-content h2 {
+      margin: 0 0 12px 0;
+      font-size: 20px;
+    }
+    
+    .modal-content p {
+      color: #666;
+      margin: 0 0 20px 0;
+      font-size: 14px;
+    }
+    
+    .modal-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    
+    .modal-btn:last-child {
+      margin-bottom: 0;
+    }
+    
+    .modal-btn.primary {
+      background: #1B3A5C;
+      color: white;
+    }
+    
+    .modal-btn.secondary {
+      background: #e5e5e7;
+      color: #1d1d1f;
+    }
+    
+    .form-group {
+      text-align: left;
+      margin-bottom: 12px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #1B3A5C;
+    }
+    
+    .submit-status {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      text-align: center;
+    }
+    
+    .submit-status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .submit-status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .submit-status.loading {
+      background: #e8f0f7;
+      color: #1B3A5C;
+    }
+    
+    .modal-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Chicago Tabernacle App</h1>
+  <div class="subtitle">UAT Testing Checklist</div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+  </div>
+  <div class="progress-text">
+    <span id="progressText">0 of 0 completed</span>
+    <span id="progressPercent">0%</span>
+  </div>
+</div>
+
+<div class="deadline-banner">
+  ⏰ Testing deadline: Friday, March 21
+</div>
+
+<div class="platform-selector">
+  <button class="platform-btn" data-platform="ios" onclick="selectPlatform('ios')">
+    <span class="icon">🍎</span> iOS
+  </button>
+  <button class="platform-btn" data-platform="android" onclick="selectPlatform('android')">
+    <span class="icon">🤖</span> Android
+  </button>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot pass"></div> Pass</div>
+  <div class="legend-item"><div class="legend-dot fail"></div> Fail</div>
+  <div class="legend-item"><div class="legend-dot skip"></div> Skip</div>
+  <button class="expand-toggle" id="expandToggle" onclick="toggleExpandAll()">Expand All ▼</button>
+</div>
+
+<div class="container" id="container">
+  <!-- Scenarios will be injected here -->
+</div>
+
+<div class="footer">
+  <button class="footer-btn secondary" onclick="resetAll()">Reset</button>
+  <button class="footer-btn primary" onclick="submitResults()">Submit Results</button>
+</div>
+
+<div class="submit-modal hidden" id="submitModal">
+  <div class="modal-content">
+    <h2>Submit Results</h2>
+    <div id="modalSummary"></div>
+    
+    <div class="form-group">
+      <label>Your Name *</label>
+      <input type="text" id="testerName" placeholder="e.g., Pastor Tim" required>
+    </div>
+    
+    <div class="form-group">
+      <label>Device Model</label>
+      <input type="text" id="deviceModel" placeholder="e.g., iPhone 14 Pro, Samsung Galaxy S23">
+    </div>
+    
+    <div class="form-group">
+      <label>OS Version</label>
+      <input type="text" id="osVersion" placeholder="e.g., iOS 17.3, Android 14">
+    </div>
+    
+    <button class="modal-btn primary" id="submitBtn" onclick="submitToSheet()">Submit to Google Sheet</button>
+    <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+    
+    <div id="submitStatus" class="submit-status"></div>
+  </div>
+</div>
+
+<script>
+const scenarios = [
+  { id: 1, area: "Auth", platform: "Both", scenario: "Login Flow", given: "User is logged out", when: "User taps Login and completes sign-in", then: "User profile is shown and session is active" },
+  { id: 2, area: "Auth", platform: "Both", scenario: "Login Persistence", given: "User is logged in", when: "User closes app and opens it again", then: "User is still logged in" },
+  { id: 3, area: "Auth", platform: "Both", scenario: "Logout", given: "User is logged in", when: "User taps Logout", then: "User is logged out and Login is shown" },
+  { id: 4, area: "Auth", platform: "Android", scenario: "Google Sign-In", given: "User is logged out", when: "User signs in with Google", then: "Login completes and account appears in app" },
+  { id: 5, area: "Auth", platform: "iOS", scenario: "iCloud Sign-In", given: "User has iCloud account", when: "User allows iCloud access in app", then: "Account access is granted and app proceeds" },
+  { id: 6, area: "Content", platform: "Both", scenario: "Home Feed Loads", given: "App is opened", when: "User views Home feed", then: "Announcement list is visible and refresh works" },
+  { id: 7, area: "Content", platform: "Both", scenario: "Open Article Detail", given: "User is on Home or Sermons", when: "User taps an article", then: "Article opens with readable content" },
+  { id: 8, area: "Content", platform: "Both", scenario: "Back Navigation", given: "User is in article detail", when: "User taps Back", then: "User returns to prior list screen" },
+  { id: 9, area: "Content", platform: "Both", scenario: "Video Playback", given: "Article has a video", when: "User taps Play", then: "Video starts and controls work" },
+  { id: 10, area: "Content", platform: "Both", scenario: "Audio Playback", given: "Article has audio", when: "User taps Play", then: "Audio starts and seek controls work" },
+  { id: 11, area: "Edge Case", platform: "Both", scenario: "Empty Article", given: "Article has little or no content", when: "User opens article", then: "App handles it gracefully without crash" },
+  { id: 12, area: "Edge Case", platform: "Both", scenario: "Missing Image", given: "Article contains a broken image link", when: "User opens article", then: "App shows fallback and continues normally" },
+  { id: 13, area: "Edge Case", platform: "Both", scenario: "Rapid Navigation", given: "User is browsing the app", when: "User rapidly taps back/forward", then: "App remains stable without crash" },
+  { id: 14, area: "Edge Case", platform: "Both", scenario: "Long Article Scroll", given: "Article is lengthy", when: "User scrolls to the end", then: "All content loads and scroll is smooth" },
+  { id: 15, area: "Edge Case", platform: "Both", scenario: "Rapid Save Tap", given: "User is viewing a note", when: "User taps Save multiple times quickly", then: "Note saves once without error" },
+  { id: 16, area: "Input", platform: "iOS", scenario: "Keyboard Layout", given: "User is editing a note", when: "Keyboard appears", then: "Text field is not hidden by keyboard" },
+  { id: 17, area: "Lifecycle", platform: "Android", scenario: "Rotation Handling", given: "User is in app", when: "User rotates device", then: "Content reflows and state is preserved" },
+  { id: 18, area: "Media", platform: "Android", scenario: "Resume Playback Position", given: "Video is paused mid-way", when: "User navigates away and returns", then: "Video resumes from where it stopped" },
+  { id: 19, area: "Media", platform: "iOS", scenario: "Video Fullscreen and Rotation", given: "Video is playing", when: "User enters fullscreen and rotates", then: "Video fills screen and controls appear" },
+  { id: 20, area: "Media", platform: "iOS", scenario: "Audio Controls", given: "Audio is playing", when: "User locks screen", then: "Lock-screen controls appear and work" },
+  { id: 21, area: "Navigation", platform: "Android", scenario: "Back Stack Behavior", given: "User opened several screens", when: "User taps Android Back repeatedly", then: "Screens close in reverse order until home/exit" },
+  { id: 22, area: "Navigation", platform: "Android", scenario: "Detail Mode and Tabs", given: "User opens a detail page", when: "User taps a different tab", then: "Tab switches cleanly; detail is dismissed" },
+  { id: 23, area: "Navigation", platform: "Android", scenario: "Drawer Navigation", given: "App has a navigation drawer", when: "User opens drawer and selects item", then: "Correct screen loads and drawer closes" },
+  { id: 24, area: "Navigation", platform: "iOS", scenario: "Tab Bar Navigation", given: "App is open", when: "User taps each tab in the tab bar", then: "Correct section loads for each tab" },
+  { id: 25, area: "Notes", platform: "Both", scenario: "Create Note", given: "User is logged in", when: "User creates a new note", then: "Note saves and appears in list" },
+  { id: 26, area: "Notes", platform: "Both", scenario: "Note Persistence", given: "User created a note", when: "User closes and reopens the app", then: "Note is still present" },
+  { id: 27, area: "Notes", platform: "Both", scenario: "Edit Note", given: "User has an existing note", when: "User edits and saves", then: "Changes are saved correctly" },
+  { id: 28, area: "Notes", platform: "Both", scenario: "Delete Note", given: "User has a note", when: "User deletes the note", then: "Note is removed from list" },
+  { id: 29, area: "Notes", platform: "Both", scenario: "Note Requires Login", given: "User is logged out", when: "User tries to create note", then: "App prompts login before allowing note" },
+  { id: 30, area: "Notes", platform: "Both", scenario: "Multiple Notes", given: "User is logged in", when: "User creates several notes", then: "All notes appear and are editable" },
+  { id: 31, area: "Notes Sync", platform: "Android", scenario: "Note Refresh on Return", given: "User edited note on another device", when: "User opens app", then: "Latest note content is shown" },
+  { id: 32, area: "Notes Sync", platform: "iOS", scenario: "iCloud Note Sync", given: "User has iCloud enabled", when: "User edits note on another device", then: "Changes sync to this device" },
+  { id: 33, area: "Notifications", platform: "iOS", scenario: "Push Opens Correct Content", given: "User receives push notification", when: "User taps notification", then: "App opens to the correct article" },
+  { id: 34, area: "Offline", platform: "Both", scenario: "Offline Note Creation", given: "Device is offline", when: "User creates or edits a note", then: "Note saves locally and syncs when online" },
+  { id: 35, area: "Offline", platform: "Both", scenario: "Offline Reading", given: "Content was loaded previously", when: "User goes offline and opens article", then: "Cached content is displayed" },
+  { id: 36, area: "Orientation", platform: "iOS", scenario: "Portrait Lock with Video Exception", given: "App is portrait-locked", when: "User plays video and rotates", then: "Video goes landscape; rest stays portrait" },
+  { id: 37, area: "Smoke", platform: "Both", scenario: "Cold Start", given: "App was force-closed", when: "User launches app", then: "App opens within 3 seconds without crash" },
+  { id: 38, area: "Smoke", platform: "Both", scenario: "Tab Navigation", given: "App is running", when: "User taps each main tab", then: "Each section loads correctly" },
+  { id: 39, area: "UX", platform: "iOS", scenario: "Note Open/Close Animation", given: "User opens a note", when: "Note panel appears", then: "Animation is smooth (no stutter)" }
+];
+
+// Google Apps Script endpoint for sheet submissions
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMtdFsKVwjDFsz4kam0vcSE7T22unmp1lbZFXMfda5XUNtNgtTIE2YZb2I2NIuosQ7/exec';
+
+let selectedPlatform = null;
+let results = {};
+let expandedAreas = new Set();
+
+// Load saved results from localStorage
+function loadResults() {
+  const saved = localStorage.getItem('ct_uat_results');
+  if (saved) {
+    results = JSON.parse(saved);
+  }
+  const savedPlatform = localStorage.getItem('ct_uat_platform');
+  if (savedPlatform) {
+    selectPlatform(savedPlatform);
+  }
+  const savedExpanded = localStorage.getItem('ct_uat_expanded');
+  if (savedExpanded) {
+    expandedAreas = new Set(JSON.parse(savedExpanded));
+  }
+}
+
+function saveResults() {
+  localStorage.setItem('ct_uat_results', JSON.stringify(results));
+  if (selectedPlatform) {
+    localStorage.setItem('ct_uat_platform', selectedPlatform);
+  }
+  localStorage.setItem('ct_uat_expanded', JSON.stringify([...expandedAreas]));
+}
+
+function selectPlatform(platform) {
+  selectedPlatform = platform;
+  document.querySelectorAll('.platform-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.platform === platform);
+  });
+  renderScenarios();
+  saveResults();
+}
+
+function getFilteredScenarios() {
+  if (!selectedPlatform) return [];
+  return scenarios.filter(s => 
+    s.platform === 'Both' || s.platform.toLowerCase() === selectedPlatform
+  );
+}
+
+function renderScenarios() {
+  const container = document.getElementById('container');
+  const filtered = getFilteredScenarios();
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">Select your platform above to begin testing.</p>';
+    updateProgress();
+    return;
+  }
+  
+  // Group by area
+  const byArea = {};
+  filtered.forEach(s => {
+    if (!byArea[s.area]) byArea[s.area] = [];
+    byArea[s.area].push(s);
+  });
+  
+  let html = '';
+  for (const [area, items] of Object.entries(byArea)) {
+    const completedInArea = items.filter(s => results[s.id]?.status).length;
+    const isComplete = completedInArea === items.length;
+    const isExpanded = expandedAreas.has(area);
+    
+    html += `
+      <div class="area-section ${isExpanded ? 'expanded' : ''}" data-area="${area}">
+        <div class="area-header" onclick="toggleArea('${area}')">
+          <div class="area-title">
+            ${area}
+            <span class="area-badge ${isComplete ? 'complete' : ''}">${completedInArea}/${items.length}</span>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="scenarios">
+          ${items.map(s => renderScenario(s)).join('')}
+        </div>
+      </div>
+    `;
+  }
+  
+  container.innerHTML = html;
+  updateProgress();
+  updateExpandToggleLabel();
+}
+
+function renderScenario(s) {
+  const result = results[s.id] || {};
+  const statusClass = result.status || '';
+  const platformClass = s.platform.toLowerCase().replace(' ', '');
+  
+  return `
+    <div class="scenario" data-id="${s.id}">
+      <div class="scenario-header">
+        <div class="checkbox ${statusClass}" onclick="cycleStatus(${s.id})">
+          ${statusClass === 'passed' ? '✓' : statusClass === 'failed' ? '✗' : statusClass === 'skipped' ? '–' : ''}
+        </div>
+        <div class="scenario-content">
+          <div class="scenario-title">
+            ${s.scenario}
+            <span class="scenario-platform ${platformClass}">${s.platform}</span>
+          </div>
+          <div class="gwt">
+            <div class="gwt-row"><span class="gwt-label">Given:</span> ${s.given}</div>
+            <div class="gwt-row"><span class="gwt-label">When:</span> ${s.when}</div>
+            <div class="gwt-row"><span class="gwt-label">Then:</span> ${s.then}</div>
+          </div>
+          <div class="status-buttons">
+            <button class="status-btn pass ${result.status === 'passed' ? 'active' : ''}" onclick="setStatus(${s.id}, 'passed')">✓ Pass</button>
+            <button class="status-btn fail ${result.status === 'failed' ? 'active' : ''}" onclick="setStatus(${s.id}, 'failed')">✗ Fail</button>
+            <button class="status-btn skip ${result.status === 'skipped' ? 'active' : ''}" onclick="setStatus(${s.id}, 'skipped')">– Skip</button>
+          </div>
+          <textarea class="notes-input" placeholder="Notes (optional)..." rows="2" onchange="setNotes(${s.id}, this.value)">${result.notes || ''}</textarea>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleArea(area) {
+  const section = document.querySelector(`.area-section[data-area="${area}"]`);
+  section.classList.toggle('expanded');
+  if (expandedAreas.has(area)) {
+    expandedAreas.delete(area);
+  } else {
+    expandedAreas.add(area);
+  }
+  saveResults();
+  updateExpandToggleLabel();
+}
+
+function toggleExpandAll() {
+  const filtered = getFilteredScenarios();
+  const allAreas = [...new Set(filtered.map(s => s.area))];
+  const allExpanded = allAreas.every(a => expandedAreas.has(a));
+  
+  if (allExpanded) {
+    // Collapse all
+    expandedAreas.clear();
+  } else {
+    // Expand all
+    allAreas.forEach(a => expandedAreas.add(a));
+  }
+  saveResults();
+  renderScenarios();
+  updateExpandToggleLabel();
+}
+
+function updateExpandToggleLabel() {
+  const filtered = getFilteredScenarios();
+  const allAreas = [...new Set(filtered.map(s => s.area))];
+  const allExpanded = allAreas.length > 0 && allAreas.every(a => expandedAreas.has(a));
+  const btn = document.getElementById('expandToggle');
+  if (btn) {
+    btn.textContent = allExpanded ? 'Collapse All ▲' : 'Expand All ▼';
+  }
+}
+
+function cycleStatus(id) {
+  const current = results[id]?.status;
+  const next = !current ? 'passed' : current === 'passed' ? 'failed' : current === 'failed' ? 'skipped' : null;
+  setStatus(id, next);
+}
+
+function setStatus(id, status) {
+  if (!results[id]) results[id] = {};
+  results[id].status = status;
+  saveResults();
+  renderScenarios();
+}
+
+function setNotes(id, notes) {
+  if (!results[id]) results[id] = {};
+  results[id].notes = notes;
+  saveResults();
+}
+
+function updateProgress() {
+  const filtered = getFilteredScenarios();
+  const completed = filtered.filter(s => results[s.id]?.status).length;
+  const total = filtered.length;
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  
+  document.getElementById('progressFill').style.width = percent + '%';
+  document.getElementById('progressText').textContent = `${completed} of ${total} completed`;
+  document.getElementById('progressPercent').textContent = percent + '%';
+}
+
+function resetAll() {
+  if (confirm('Reset all test results? This cannot be undone.')) {
+    results = {};
+    expandedAreas.clear();
+    localStorage.removeItem('ct_uat_results');
+    localStorage.removeItem('ct_uat_expanded');
+    renderScenarios();
+  }
+}
+
+function submitResults() {
+  const filtered = getFilteredScenarios();
+  const passed = filtered.filter(s => results[s.id]?.status === 'passed').length;
+  const failed = filtered.filter(s => results[s.id]?.status === 'failed').length;
+  const skipped = filtered.filter(s => results[s.id]?.status === 'skipped').length;
+  const incomplete = filtered.length - passed - failed - skipped;
+  
+  document.getElementById('modalSummary').innerHTML = `
+    <div style="background: #f5f5f7; padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
+      <strong style="font-size: 16px;">${selectedPlatform?.toUpperCase()}</strong><br>
+      <span style="color: #34c759;">✓ ${passed} Passed</span> &nbsp;
+      <span style="color: #ff3b30;">✗ ${failed} Failed</span> &nbsp;
+      <span style="color: #ff9500;">– ${skipped} Skipped</span>
+      ${incomplete > 0 ? `<br><span style="color: #ff9500; font-size: 12px;">⚠ ${incomplete} not yet tested</span>` : ''}
+    </div>
+  `;
+  
+  // Clear previous status
+  document.getElementById('submitStatus').textContent = '';
+  document.getElementById('submitStatus').className = 'submit-status';
+  document.getElementById('submitBtn').disabled = false;
+  
+  // Load saved tester info
+  const savedName = localStorage.getItem('ct_uat_testerName') || '';
+  const savedDevice = localStorage.getItem('ct_uat_device') || '';
+  const savedOS = localStorage.getItem('ct_uat_os') || '';
+  document.getElementById('testerName').value = savedName;
+  document.getElementById('deviceModel').value = savedDevice;
+  document.getElementById('osVersion').value = savedOS;
+  
+  document.getElementById('submitModal').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('submitModal').classList.add('hidden');
+}
+
+async function submitToSheet() {
+  const testerName = document.getElementById('testerName').value.trim();
+  const device = document.getElementById('deviceModel').value.trim();
+  const osVersion = document.getElementById('osVersion').value.trim();
+  const statusEl = document.getElementById('submitStatus');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  if (!testerName) {
+    statusEl.textContent = 'Please enter your name';
+    statusEl.className = 'submit-status error';
+    return;
+  }
+  
+  // Check if URL has been configured
+  if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+    statusEl.innerHTML = 'Google Script URL not configured yet.<br><a href="#" onclick="copyResultsForManual(); return false;">Click here to copy results</a>';
+    statusEl.className = 'submit-status error';
+    return;
+  }
+  
+  // Save tester info for next time
+  localStorage.setItem('ct_uat_testerName', testerName);
+  localStorage.setItem('ct_uat_device', device);
+  localStorage.setItem('ct_uat_os', osVersion);
+  
+  // Prepare payload
+  const filtered = getFilteredScenarios();
+  const payload = {
+    testerName: testerName,
+    platform: selectedPlatform,
+    device: device,
+    osVersion: osVersion,
+    totalScenarios: filtered.length,
+    results: {}
+  };
+  
+  // Include only tested scenarios with their details
+  filtered.forEach(s => {
+    if (results[s.id]) {
+      payload.results[s.id] = {
+        scenario: s.scenario,
+        area: s.area,
+        status: results[s.id].status,
+        notes: results[s.id].notes || ''
+      };
+    }
+  });
+  
+  // Show loading state
+  submitBtn.disabled = true;
+  statusEl.textContent = 'Submitting...';
+  statusEl.className = 'submit-status loading';
+  
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Required for Apps Script
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    // With no-cors, we can't read the response, but if it didn't throw, it likely worked
+    statusEl.innerHTML = '✓ Results submitted successfully!<br><small>You can close this page.</small>';
+    statusEl.className = 'submit-status success';
+    submitBtn.textContent = 'Submitted ✓';
+    
+  } catch (error) {
+    console.error('Submit error:', error);
+    statusEl.innerHTML = 'Error submitting. <a href="#" onclick="copyResultsForManual(); return false;">Copy results instead</a>';
+    statusEl.className = 'submit-status error';
+    submitBtn.disabled = false;
+  }
+}
+
+function copyResultsForManual() {
+  const filtered = getFilteredScenarios();
+  const testerName = document.getElementById('testerName').value.trim() || 'Anonymous';
+  
+  let text = `Chicago Tabernacle App - UAT Results\n`;
+  text += `Tester: ${testerName}\n`;
+  text += `Platform: ${selectedPlatform?.toUpperCase()}\n`;
+  text += `Date: ${new Date().toLocaleDateString()}\n\n`;
+  
+  const passed = filtered.filter(s => results[s.id]?.status === 'passed').length;
+  const failed = filtered.filter(s => results[s.id]?.status === 'failed').length;
+  const skipped = filtered.filter(s => results[s.id]?.status === 'skipped').length;
+  
+  text += `SUMMARY: ${passed} Passed, ${failed} Failed, ${skipped} Skipped\n\n`;
+  
+  // Group by area
+  const byArea = {};
+  filtered.forEach(s => {
+    if (!byArea[s.area]) byArea[s.area] = [];
+    byArea[s.area].push(s);
+  });
+  
+  for (const [area, items] of Object.entries(byArea)) {
+    text += `=== ${area} ===\n`;
+    items.forEach(s => {
+      const r = results[s.id] || {};
+      const status = r.status ? r.status.toUpperCase() : 'NOT TESTED';
+      text += `[${status}] ${s.scenario}`;
+      if (r.notes) text += ` — ${r.notes}`;
+      text += `\n`;
+    });
+    text += `\n`;
+  }
+  
+  navigator.clipboard.writeText(text).then(() => {
+    const statusEl = document.getElementById('submitStatus');
+    statusEl.textContent = '✓ Copied! Paste into email or sheet.';
+    statusEl.className = 'submit-status success';
+  }).catch(() => {
+    alert('Could not copy to clipboard.');
+  });
+}
+
+// Initialize
+loadResults();
+if (!selectedPlatform) {
+  document.getElementById('container').innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">👆 Select your platform above to begin testing.</p>';
+}
+</script>
+
+</body>
+</html>
